@@ -79,6 +79,14 @@ DxfData::DxfData(double fn, double fs, double fa,
 								 const std::string &filename, const std::string &layername, 
 								 double xorigin, double yorigin, double scale)
 {
+	this->fn = fn;
+	this->fs = fs;
+	this->fa = fa;
+	this->filename = filename;
+	this->layername = layername;
+	this->xorigin = xorigin;
+	this->yorigin = yorigin;
+	this->scale = scale;
 	std::ifstream stream(filename.c_str());
 	if (!stream.good()) {
 		PRINTB("WARNING: Can't open DXF file '%s'.", filename);
@@ -619,4 +627,22 @@ Polygon2d *DxfData::toPolygon2d() const
 		poly->addOutline(outline);
 	}
 	return poly;
+}
+
+void DxfData::ProcessEnititesCircle(double x, double y, double z, double radius, bool state)
+{
+	int n = Calc::get_fragments_from_r(radius, this->fn, this->fs, this->fa);
+	if(state) {
+		Vector2d center(x - this->xorigin, y - this->yorigin); //state? in_block_sections? in_entitites_sections?
+	}
+	else {
+		Vector2d center(x, y);
+	}
+		for (int i = 0; i < n; i++) {
+			double a1 = (360.0 * i) / n;
+			double a2 = (360.0 *(i + 1)) / n;
+			// in_blocks_sections? in_entities_sections? state?
+			// ADD_LINE(cos_degrees(a1)*radius + center[0], sin_degrees(a1)*radius + center[1],
+			// 				cos_degrees(a2)*radius + center[0], sin_degrees(a2)*radius + center[1]);
+		}
 }

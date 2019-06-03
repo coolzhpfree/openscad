@@ -5,6 +5,11 @@
 
 class DxfData
 {
+private:
+	double fn, fa, fs;
+	double xorigin, yorigin;
+	double scale;
+	std::string filename, layername;
 public:
 	struct Path {
 		std::vector<int> indices; // indices into DxfData::points
@@ -26,7 +31,7 @@ public:
 			length = 0;
 		}
 	};
-
+	
 	VectorOfVector2d points;
 	std::vector<Path> paths;
 	std::vector<Dim> dims;
@@ -41,4 +46,7 @@ public:
 	void fixup_path_direction();
 	std::string dump() const;
 	class Polygon2d *toPolygon2d() const;
+
+	void DxfData::ProcessEnititesCircle(double x, double y, double z, 
+										double radius, bool state);
 };
